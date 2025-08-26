@@ -5,8 +5,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from restream_io.schemas import ChatEvent, StreamingEvent
-from restream_io.websocket import (
+from pyrestream.schemas import ChatEvent, StreamingEvent
+from pyrestream.websocket import (
     ChatMonitorClient,
     StreamingMonitorClient,
     WebSocketClient,
@@ -34,7 +34,7 @@ class TestWebSocketClient:
     async def test_connect_success(self):
         """Test successful WebSocket connection."""
         with (
-            patch("restream_io.websocket.get_access_token", return_value="test_token"),
+            patch("pyrestream.websocket.get_access_token", return_value="test_token"),
             patch("websockets.connect", new_callable=AsyncMock) as mock_connect,
         ):
             mock_websocket = AsyncMock()
@@ -53,7 +53,7 @@ class TestWebSocketClient:
     @pytest.mark.asyncio
     async def test_connect_no_token(self):
         """Test WebSocket connection with no access token."""
-        with patch("restream_io.websocket.get_access_token", return_value=None):
+        with patch("pyrestream.websocket.get_access_token", return_value=None):
             client = WebSocketClient("wss://example.com/ws")
 
             with pytest.raises(Exception):  # AuthenticationError
@@ -136,7 +136,7 @@ class TestWebSocketClient:
                 client._running = False
 
         with (
-            patch("restream_io.websocket.get_access_token", return_value="test_token"),
+            patch("pyrestream.websocket.get_access_token", return_value="test_token"),
             patch("websockets.connect", new_callable=AsyncMock) as mock_connect,
         ):
             mock_websocket = AsyncMock()
@@ -180,7 +180,7 @@ class TestWebSocketClient:
             client._running = False  # Stop after first valid message
 
         with (
-            patch("restream_io.websocket.get_access_token", return_value="test_token"),
+            patch("pyrestream.websocket.get_access_token", return_value="test_token"),
             patch("websockets.connect", new_callable=AsyncMock) as mock_connect,
         ):
             mock_websocket = AsyncMock()

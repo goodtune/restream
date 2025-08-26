@@ -2,7 +2,7 @@
 
 import pytest
 
-from restream_io.schemas import Channel, ChannelSummary
+from pyrestream.schemas import Channel, ChannelSummary
 
 
 class TestChannelSchemas:

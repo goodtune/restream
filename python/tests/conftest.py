@@ -6,8 +6,8 @@ import pytest
 import requests
 import responses
 
-from restream_io import config
-from restream_io.api import RestreamClient
+from pyrestream import config
+from pyrestream.api import RestreamClient
 
 
 @pytest.fixture(autouse=True)

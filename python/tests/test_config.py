@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from restream_io import config
+from pyrestream import config
 
 
 @pytest.fixture

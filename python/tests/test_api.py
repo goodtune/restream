@@ -7,8 +7,8 @@ import pytest
 import requests
 import responses
 
-from restream_io.api import RestreamClient
-from restream_io.errors import APIError, AuthenticationError
+from pyrestream.api import RestreamClient
+from pyrestream.errors import APIError, AuthenticationError
 
 
 class TestAPIError:
@@ -171,7 +171,7 @@ class TestRestreamClientEnhanced:
         assert "Network error" in error.message
         assert "Connection failed" in error.message
 
-    @patch("restream_io.api.load_tokens")
+    @patch("pyrestream.api.load_tokens")
     def test_from_config_no_tokens(self, mock_load_tokens):
         """Test from_config when no tokens are stored."""
         mock_load_tokens.return_value = None
@@ -181,7 +181,7 @@ class TestRestreamClientEnhanced:
 
         assert "No stored tokens found" in str(exc_info.value)
 
-    @patch("restream_io.api.load_tokens")
+    @patch("pyrestream.api.load_tokens")
     def test_from_config_no_access_token(self, mock_load_tokens):
         """Test from_config when tokens don't contain access_token."""
         mock_load_tokens.return_value = {"refresh_token": "refresh-token"}
@@ -191,7 +191,7 @@ class TestRestreamClientEnhanced:
 
         assert "No access token found" in str(exc_info.value)
 
-    @patch("restream_io.api.load_tokens")
+    @patch("pyrestream.api.load_tokens")
     def test_from_config_valid_token(self, mock_load_tokens):
         """Test from_config with valid non-expired token."""
         future_time = time.time() + 3600  # 1 hour from now
@@ -205,8 +205,8 @@ class TestRestreamClientEnhanced:
         assert client.token == "access-token"
         assert client.session.headers["Authorization"] == "Bearer access-token"
 
-    @patch("restream_io.api.load_tokens")
-    @patch("restream_io.api.RestreamClient._refresh_token")
+    @patch("pyrestream.api.load_tokens")
+    @patch("pyrestream.api.RestreamClient._refresh_token")
     def test_from_config_expired_token_with_refresh(
         self, mock_refresh, mock_load_tokens
     ):
@@ -223,7 +223,7 @@ class TestRestreamClientEnhanced:
         assert client.token == "new-access-token"
         mock_refresh.assert_called_once_with("refresh-token")
 
-    @patch("restream_io.api.load_tokens")
+    @patch("pyrestream.api.load_tokens")
     def test_from_config_expired_token_no_refresh(self, mock_load_tokens):
         """Test from_config with expired token and no refresh token."""
         past_time = time.time() - 3600  # 1 hour ago
@@ -320,7 +320,7 @@ class TestTokenRefresh:
                 status=200,
             )
 
-            with patch("restream_io.api.save_tokens") as mock_save_tokens:
+            with patch("pyrestream.api.save_tokens") as mock_save_tokens:
                 result = RestreamClient._refresh_token("old-refresh-token")
 
                 assert result == "new-access-token"

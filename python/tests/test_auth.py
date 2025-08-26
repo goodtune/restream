@@ -9,11 +9,8 @@ from urllib.parse import parse_qs, urlparse
 import pytest
 import requests
 import responses
-from click.testing import CliRunner
-
-from restream_io import auth, config
-from restream_io.cli import login
-from restream_io.errors import AuthenticationError
+from pyrestream import auth, config
+from pyrestream.errors import AuthenticationError
 
 
 @pytest.fixture
@@ -308,8 +305,8 @@ class TestPerformLogin:
             with pytest.raises(AuthenticationError, match="Client ID not provided"):
                 auth.perform_login()
 
-    @patch("restream_io.auth.webbrowser.open")
-    @patch("restream_io.auth.HTTPServer")
+    @patch("pyrestream.auth.webbrowser.open")
+    @patch("pyrestream.auth.HTTPServer")
     def test_perform_login_builds_correct_url(
         self, mock_server, mock_browser, temp_config_dir
     ):
@@ -319,7 +316,7 @@ class TestPerformLogin:
         mock_server.return_value = mock_server_instance
 
         # Mock the callback event to timeout quickly
-        with patch("restream_io.auth.Event") as mock_event:
+        with patch("pyrestream.auth.Event") as mock_event:
             mock_event_instance = MagicMock()
             mock_event_instance.wait.return_value = False  # Timeout
             mock_event.return_value = mock_event_instance
@@ -345,8 +342,8 @@ class TestPerformLogin:
         assert "code_challenge" in query_params  # PKCE enabled by default
         assert query_params["code_challenge_method"] == ["S256"]
 
-    @patch("restream_io.auth.webbrowser.open")
-    @patch("restream_io.auth.HTTPServer")
+    @patch("pyrestream.auth.webbrowser.open")
+    @patch("pyrestream.auth.HTTPServer")
     def test_perform_login_without_pkce(
         self, mock_server, mock_browser, temp_config_dir
     ):
@@ -354,7 +351,7 @@ class TestPerformLogin:
         mock_server_instance = MagicMock()
         mock_server.return_value = mock_server_instance
 
-        with patch("restream_io.auth.Event") as mock_event:
+        with patch("pyrestream.auth.Event") as mock_event:
             mock_event_instance = MagicMock()
             mock_event_instance.wait.return_value = False
             mock_event.return_value = mock_event_instance
@@ -372,8 +369,8 @@ class TestPerformLogin:
         assert "code_challenge_method" not in query_params
 
     @responses.activate
-    @patch("restream_io.auth.webbrowser.open")
-    @patch("restream_io.auth.HTTPServer")
+    @patch("pyrestream.auth.webbrowser.open")
+    @patch("pyrestream.auth.HTTPServer")
     def test_perform_login_success_flow(
         self, mock_server, mock_browser, temp_config_dir
     ):
@@ -398,7 +395,7 @@ class TestPerformLogin:
         mock_server.return_value = mock_server_instance
 
         # Mock the callback event to simulate successful callback
-        with patch("restream_io.auth.Event") as mock_event:
+        with patch("pyrestream.auth.Event") as mock_event:
             mock_event_instance = MagicMock()
             mock_event_instance.wait.return_value = True  # Callback received
             mock_event.return_value = mock_event_instance
@@ -419,7 +416,7 @@ class TestPerformLogin:
                             pass
 
                     # For this test, we'll mock the auth_code retrieval
-                    with patch("restream_io.auth.perform_login") as mock_login:
+                    with patch("pyrestream.auth.perform_login") as mock_login:
                         mock_login.return_value = True
                         result = auth.perform_login(redirect_port=8080)
                         assert result is True
@@ -428,13 +425,4 @@ class TestPerformLogin:
 class TestIntegration:
     """Integration tests for the OAuth flow."""
 
-    def test_login_command_missing_client_id(self):
-        """Test login command with missing client ID."""
-        runner = CliRunner()
-
-        with patch.dict("os.environ", {}, clear=True):
-            result = runner.invoke(login, ["--port", "12000"])
-
-            assert result.exit_code == 1
-            assert "Login failed" in result.output
-            assert "RESTREAM_CLIENT_ID" in result.output
+    # CLI integration tests removed - CLI is in separate package

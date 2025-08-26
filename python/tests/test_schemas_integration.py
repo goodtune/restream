@@ -3,8 +3,8 @@
 import requests
 import responses
 
-from restream_io.api import RestreamClient
-from restream_io.schemas import (
+from pyrestream.api import RestreamClient
+from pyrestream.schemas import (
     Channel,
     ChannelSummary,
     EventDestination,

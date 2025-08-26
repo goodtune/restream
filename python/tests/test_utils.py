@@ -4,8 +4,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from restream_io.errors import APIError
-from restream_io.utils import exponential_backoff, retry_on_transient_error
+from pyrestream.errors import APIError
+from pyrestream.utils import exponential_backoff, retry_on_transient_error
 
 
 class TestExponentialBackoff:
@@ -66,7 +66,7 @@ class TestRetryDecorator:
         assert result == "success"
         mock_func.assert_called_once_with("arg1", key="value")
 
-    @patch("restream_io.utils.exponential_backoff")
+    @patch("pyrestream.utils.exponential_backoff")
     def test_retry_decorator_transient_error_then_success(self, mock_backoff):
         """Test function that fails with transient error then succeeds."""
         transient_error = APIError("Server error", status_code=500)
@@ -79,7 +79,7 @@ class TestRetryDecorator:
         assert mock_func.call_count == 2
         mock_backoff.assert_called_once_with(0, 0.5, 10.0)  # First retry
 
-    @patch("restream_io.utils.exponential_backoff")
+    @patch("pyrestream.utils.exponential_backoff")
     def test_retry_decorator_non_transient_error_no_retry(self, mock_backoff):
         """Test function that fails with non-transient error."""
         non_transient_error = APIError("Not found", status_code=404)
@@ -93,7 +93,7 @@ class TestRetryDecorator:
         mock_func.assert_called_once()
         mock_backoff.assert_not_called()  # No retry
 
-    @patch("restream_io.utils.exponential_backoff")
+    @patch("pyrestream.utils.exponential_backoff")
     def test_retry_decorator_exhausted_retries(self, mock_backoff):
         """Test function that exhausts all retries."""
         transient_error = APIError("Server error", status_code=500)
@@ -119,7 +119,7 @@ class TestRetryDecorator:
         assert str(exc_info.value) == "Invalid value"
         mock_func.assert_called_once()  # No retry
 
-    @patch("restream_io.utils.exponential_backoff")
+    @patch("pyrestream.utils.exponential_backoff")
     def test_retry_decorator_custom_parameters(self, mock_backoff):
         """Test retry decorator with custom parameters."""
         transient_error = APIError("Rate limited", status_code=429)
@@ -134,7 +134,7 @@ class TestRetryDecorator:
         assert mock_func.call_count == 2
         mock_backoff.assert_called_once_with(0, 1.0, 30.0)  # Custom parameters
 
-    @patch("restream_io.utils.exponential_backoff")
+    @patch("pyrestream.utils.exponential_backoff")
     def test_retry_decorator_multiple_transient_errors(self, mock_backoff):
         """Test function with multiple transient errors before success."""
         error1 = APIError("Server error", status_code=500)
