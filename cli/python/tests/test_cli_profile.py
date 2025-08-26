@@ -8,7 +8,7 @@ from unittest.mock import patch
 import responses
 from click.testing import CliRunner
 
-from restream_io import config
+from pyrestream import config
 from restream_io.cli import profile
 
 
@@ -62,7 +62,7 @@ def test_profile_command_json_output():
 
         with patch.object(config, "CONFIG_PATH", config_path):
             # Use the main CLI with --json flag
-            from restream_io.cli import cli
+            from restream_io.cli import main as cli
 
             result = runner.invoke(cli, ["profile", "--json"])
 

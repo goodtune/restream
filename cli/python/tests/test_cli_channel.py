@@ -8,9 +8,9 @@ from unittest.mock import patch
 import responses
 from click.testing import CliRunner
 
-from restream_io import config
-from restream_io.cli import cli
-from restream_io.schemas import Channel
+from pyrestream import config
+from restream_io.cli import main as cli
+from pyrestream.schemas import Channel
 
 
 def test_channel_str_method():

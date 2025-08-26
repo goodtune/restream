@@ -16,14 +16,16 @@ dependencies = [
   "click>=8.2.1",
   "pyrestream>=0.1.0",
 ]
-scripts = { "restream.io" = "restream_io_cli.cli:main" }
+scripts = { "restream.io" = "restream_io.cli:main" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools_scm]
+root = "../.."
 version_scheme = "release-branch-semver"
 local_scheme = "dirty-tag"
+fallback_version = "0.0.0+unknown"
 
 [dependency-groups]
 dev = [

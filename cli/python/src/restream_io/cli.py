@@ -131,18 +131,10 @@ def _handle_api_error(e):
 
 
 @click.group(invoke_without_command=True)
-@click.option("--version", is_flag=True, help="Show version and exit")
+@click.version_option()
 @click.pass_context
-def main(ctx, version_flag):
+def main(ctx):
     """Restream.io CLI - Interact with the Restream.io API."""
-    if version_flag:
-        try:
-            cli_version = version("restream.io")
-            click.echo(f"restream.io CLI {cli_version}")
-        except Exception:
-            click.echo("restream.io CLI (development version)")
-        return
-
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
 
