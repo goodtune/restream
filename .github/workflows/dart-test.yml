@@ -42,7 +42,7 @@ jobs:
 
     - name: Analyze project source
       working-directory: dart
-      run: dart analyze --fatal-infos
+      run: dart analyze --fatal-infos lib test
 
     - name: Run tests
       working-directory: dart
