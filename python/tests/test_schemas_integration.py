@@ -4,13 +4,8 @@ import requests
 import responses
 
 from pyrestream.api import RestreamClient
-from pyrestream.schemas import (
-    Channel,
-    ChannelSummary,
-    EventDestination,
-    Profile,
-    StreamEvent,
-)
+from pyrestream.schemas import (Channel, ChannelSummary, EventDestination,
+                                Profile, StreamEvent)
 
 
 class TestSchemaIntegration:

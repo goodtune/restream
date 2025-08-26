@@ -9,6 +9,7 @@ from urllib.parse import parse_qs, urlparse
 import pytest
 import requests
 import responses
+
 from pyrestream import auth, config
 from pyrestream.errors import AuthenticationError
 

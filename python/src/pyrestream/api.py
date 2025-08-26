@@ -7,20 +7,9 @@ from urllib3.util.retry import Retry
 
 from .config import get_client_id, get_client_secret, load_tokens, save_tokens
 from .errors import APIError, AuthenticationError
-from .schemas import (
-    Channel,
-    ChannelMeta,
-    ChannelSummary,
-    EventDestination,
-    EventsHistoryResponse,
-    EventsPagination,
-    Platform,
-    PlatformImage,
-    Profile,
-    Server,
-    StreamEvent,
-    StreamKey,
-)
+from .schemas import (Channel, ChannelMeta, ChannelSummary, EventDestination,
+                      EventsHistoryResponse, EventsPagination, Platform,
+                      PlatformImage, Profile, Server, StreamEvent, StreamKey)
 
 DEFAULT_BASE_URL = "https://api.restream.io/v2"
 

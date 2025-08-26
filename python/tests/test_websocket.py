@@ -6,11 +6,8 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from pyrestream.schemas import ChatEvent, StreamingEvent
-from pyrestream.websocket import (
-    ChatMonitorClient,
-    StreamingMonitorClient,
-    WebSocketClient,
-)
+from pyrestream.websocket import (ChatMonitorClient, StreamingMonitorClient,
+                                  WebSocketClient)
 
 
 class TestWebSocketClient:
