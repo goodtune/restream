@@ -1,10 +1,18 @@
-name: Test Suite
+name: Python CLI Tests
 
 on:
   push:
     branches: [ main, develop ]
+    paths:
+      - 'cli/python/**'
+      - 'python/**'  # CLI depends on client library
+      - '.github/workflows/python-cli-test.yml'
   pull_request:
     branches: [ main, develop ]
+    paths:
+      - 'cli/python/**'
+      - 'python/**'  # CLI depends on client library
+      - '.github/workflows/python-cli-test.yml'
 
 jobs:
   test:
@@ -26,13 +34,22 @@ jobs:
     - name: Set up Python ${{ matrix.python-version }}
       run: uv python install ${{ matrix.python-version }}
 
-    - name: Install dependencies
-      run: uv sync
+    - name: Install client library
+      working-directory: python
+      run: uv sync && uv build
 
-    - name: Run tests
+    - name: Install CLI with dependencies
+      working-directory: cli/python
+      run: |
+        uv sync
+        uv add ../../python/dist/*.whl
+
+    - name: Run CLI tests
+      working-directory: cli/python
       run: uv run pytest
 
     - name: Test CLI functionality
+      working-directory: cli/python
       run: |
         uv run restream.io --help
         uv run restream.io version

@@ -1,15 +1,40 @@
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-env/
 .venv/
 dist/
 build/
 *.egg-info/
 *.egg
+.mypy_cache/
+.pytest_cache/
+
+# Dart/Flutter
+.dart_tool/
+.packages
+pubspec.lock
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+
+# IDE
+.vscode/
+.idea/
 *.swp
-/.mypy_cache/
-/*.lock
-# config cache or local tokens
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Lock files
+uv.lock
+
+# Config cache and local tokens
 *.json
+
+# Local development
+.env
+.env.local

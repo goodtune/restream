@@ -9,8 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  restream_dart:
-    path: ../restream_dart
+  restream:
+    path: ../../
   url_launcher: ^6.1.0
   shared_preferences: ^2.2.0
 

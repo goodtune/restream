@@ -1,9 +1,9 @@
-name: restream_dart
+name: restream
 description: A Dart library for interacting with the Restream.io REST API and WebSocket APIs, designed for Flutter applications.
-version: 0.1.0
-repository: https://github.com/goodtune/restream-cli
-homepage: https://github.com/goodtune/restream-cli
-issue_tracker: https://github.com/goodtune/restream-cli/issues
+version: 0.0.0+1
+repository: https://github.com/goodtune/restream
+homepage: https://github.com/goodtune/restream
+issue_tracker: https://github.com/goodtune/restream/issues
 
 environment:
   sdk: ^3.9.0

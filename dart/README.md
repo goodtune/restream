@@ -292,10 +292,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Related Projects
 
-- [restream-cli](https://github.com/goodtune/restream-cli) - Python CLI tool (original implementation)
+- [restream](https://github.com/goodtune/restream) - Multi-language SDK repository
 - [Restream.io API Documentation](https://developers.restream.io/) - Official API documentation
 
 ## Support
 
-- [Issues](https://github.com/goodtune/restream-cli/issues) - Report bugs or request features
+- [Issues](https://github.com/goodtune/restream/issues) - Report bugs or request features
 - [API Documentation](https://developers.restream.io/) - Official Restream.io API docs
