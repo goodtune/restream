@@ -36,6 +36,10 @@ jobs:
       working-directory: dart
       run: dart pub get
 
+    - name: Get Flutter example dependencies
+      working-directory: dart/examples/flutter_example
+      run: dart pub get
+
     - name: Verify formatting
       working-directory: dart
       run: dart format --output=none --set-exit-if-changed .
