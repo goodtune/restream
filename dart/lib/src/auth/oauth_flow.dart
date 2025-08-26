@@ -13,10 +13,8 @@ class OAuthFlow {
   final RestreamConfig config;
   final http.Client _httpClient;
 
-  OAuthFlow({
-    required this.config,
-    http.Client? httpClient,
-  }) : _httpClient = httpClient ?? http.Client();
+  OAuthFlow({required this.config, http.Client? httpClient})
+    : _httpClient = httpClient ?? http.Client();
 
   /// Generate PKCE (Proof Key for Code Exchange) parameters.
   PkceParameters generatePkce() {
@@ -26,13 +24,15 @@ class OAuthFlow {
     for (int i = 0; i < codeVerifierBytes.length; i++) {
       codeVerifierBytes[i] = random.nextInt(256);
     }
-    
-    final codeVerifier = base64Url.encode(codeVerifierBytes).replaceAll('=', '');
-    
+
+    final codeVerifier = base64Url
+        .encode(codeVerifierBytes)
+        .replaceAll('=', '');
+
     // Generate code challenge (SHA256 hash of verifier, base64url encoded)
     final challengeBytes = sha256.convert(utf8.encode(codeVerifier)).bytes;
     final codeChallenge = base64Url.encode(challengeBytes).replaceAll('=', '');
-    
+
     return PkceParameters(
       codeVerifier: codeVerifier,
       codeChallenge: codeChallenge,
@@ -40,7 +40,7 @@ class OAuthFlow {
   }
 
   /// Generate authorization URL for OAuth flow.
-  /// 
+  ///
   /// [redirectUri] - The redirect URI configured in your OAuth app
   /// [scopes] - List of scopes to request (e.g., ['profile.read', 'stream.read'])
   /// [state] - Optional state parameter for CSRF protection
@@ -72,14 +72,17 @@ class OAuthFlow {
     }
 
     final queryString = params.entries
-        .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .map(
+          (e) =>
+              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
+        )
         .join('&');
 
     return '${RestreamConfig.authEndpoint}?$queryString';
   }
 
   /// Exchange authorization code for access tokens.
-  /// 
+  ///
   /// [authCode] - Authorization code received from the callback
   /// [redirectUri] - The same redirect URI used in authorization
   /// [codeVerifier] - PKCE code verifier if PKCE was used
@@ -112,13 +115,18 @@ class OAuthFlow {
     }
 
     try {
-      final response = await _httpClient.post(
-        Uri.parse(RestreamConfig.tokenEndpoint),
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: body.entries
-            .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-            .join('&'),
-      ).timeout(config.timeout);
+      final response = await _httpClient
+          .post(
+            Uri.parse(RestreamConfig.tokenEndpoint),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: body.entries
+                .map(
+                  (e) =>
+                      '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
+                )
+                .join('&'),
+          )
+          .timeout(config.timeout);
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body) as Map<String, dynamic>;
@@ -151,13 +159,18 @@ class OAuthFlow {
     }
 
     try {
-      final response = await _httpClient.post(
-        Uri.parse(RestreamConfig.tokenEndpoint),
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: body.entries
-            .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-            .join('&'),
-      ).timeout(config.timeout);
+      final response = await _httpClient
+          .post(
+            Uri.parse(RestreamConfig.tokenEndpoint),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: body.entries
+                .map(
+                  (e) =>
+                      '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
+                )
+                .join('&'),
+          )
+          .timeout(config.timeout);
 
       if (response.statusCode == 200) {
         return jsonDecode(response.body) as Map<String, dynamic>;
@@ -178,7 +191,7 @@ class OAuthFlow {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final error = data['error'] as String?;
       final description = data['error_description'] as String?;
-      
+
       if (description != null) {
         return description;
       } else if (error != null) {
@@ -187,7 +200,7 @@ class OAuthFlow {
     } catch (_) {
       // Fall back to response body
     }
-    
+
     return response.body.isNotEmpty ? response.body : 'Unknown error';
   }
 
@@ -209,9 +222,9 @@ class PkceParameters {
   @override
   String toString() {
     return 'PkceParameters{\n'
-           '  codeVerifier: ${_mask(codeVerifier)},\n'
-           '  codeChallenge: $codeChallenge\n'
-           '}';
+        '  codeVerifier: ${_mask(codeVerifier)},\n'
+        '  codeChallenge: $codeChallenge\n'
+        '}';
   }
 
   String _mask(String value) {

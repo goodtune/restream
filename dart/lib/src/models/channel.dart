@@ -7,16 +7,16 @@ part 'channel.g.dart';
 class Channel {
   /// Channel ID.
   final int id;
-  
+
   /// Channel name.
   final String name;
-  
+
   /// Streaming platform ID.
   final int platformId;
-  
+
   /// Whether the channel is active/enabled.
   final bool active;
-  
+
   /// Channel URL if available.
   final String? url;
 
@@ -42,20 +42,18 @@ class Channel {
       ..writeln('  ID: $id')
       ..writeln('  Platform ID: $platformId')
       ..writeln('  Active: ${active ? 'Yes' : 'No'}');
-    
+
     if (url != null) {
       buffer.writeln('  URL: $url');
     }
-    
+
     return buffer.toString().trim();
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Channel &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+      other is Channel && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -66,10 +64,10 @@ class Channel {
 class ChannelMeta {
   /// Channel ID.
   final int channelId;
-  
+
   /// Stream title.
   final String title;
-  
+
   /// Stream description.
   final String? description;
 
@@ -92,11 +90,11 @@ class ChannelMeta {
       ..writeln('Channel Meta:')
       ..writeln('  Channel ID: $channelId')
       ..writeln('  Title: $title');
-    
+
     if (description != null && description!.isNotEmpty) {
       buffer.writeln('  Description: $description');
     }
-    
+
     return buffer.toString().trim();
   }
 

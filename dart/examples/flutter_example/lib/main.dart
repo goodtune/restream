@@ -17,10 +17,7 @@ class RestreamApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Restream Flutter Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
       home: const AuthCheckScreen(),
     );
   }
@@ -63,14 +60,10 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    return _isAuthenticated 
+    return _isAuthenticated
         ? HomeScreen(restreamService: _restreamService)
         : AuthScreen(
             restreamService: _restreamService,

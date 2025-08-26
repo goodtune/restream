@@ -9,16 +9,16 @@ part 'platform.g.dart';
 class Platform {
   /// Platform ID.
   final int id;
-  
+
   /// Platform name (e.g., 'youtube', 'twitch').
   final String name;
-  
+
   /// Platform URL.
   final String url;
-  
+
   /// Platform image URLs.
   final PlatformImage image;
-  
+
   /// Alternative platform image URLs.
   final PlatformImage altImage;
 
@@ -40,18 +40,16 @@ class Platform {
   @override
   String toString() {
     return 'Platform: $name\n'
-           '  ID: $id\n'
-           '  URL: $url\n'
-           '  Image: $image\n'
-           '  Alt Image: $altImage';
+        '  ID: $id\n'
+        '  URL: $url\n'
+        '  Image: $image\n'
+        '  Alt Image: $altImage';
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Platform &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+      other is Platform && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;

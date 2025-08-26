@@ -31,15 +31,12 @@ class StreamingEvent {
 
   factory StreamingEvent.fromJson(Map<String, dynamic> json) {
     final action = json['action'] as String? ?? 'unknown';
-    final payload = json['payload'] as Map<String, dynamic>? ?? <String, dynamic>{};
-    
+    final payload =
+        json['payload'] as Map<String, dynamic>? ?? <String, dynamic>{};
+
     final type = _parseEventType(action);
-    
-    return StreamingEvent(
-      type: type,
-      action: action,
-      payload: payload,
-    );
+
+    return StreamingEvent(type: type, action: action, payload: payload);
   }
 
   static StreamingEventType _parseEventType(String action) {
@@ -64,11 +61,11 @@ class StreamingEvent {
   @override
   String toString() {
     return 'StreamingEvent{\n'
-           '  type: $type,\n'
-           '  action: $action,\n'
-           '  payload: $payload,\n'
-           '  timestamp: $timestamp\n'
-           '}';
+        '  type: $type,\n'
+        '  action: $action,\n'
+        '  payload: $payload,\n'
+        '  timestamp: $timestamp\n'
+        '}';
   }
 }
 
@@ -76,21 +73,18 @@ class StreamingEvent {
 class StreamingMonitor {
   final String accessToken;
   final Duration? maxDuration;
-  
+
   WebSocketChannel? _channel;
   StreamSubscription? _messageSubscription;
-  final StreamController<StreamingEvent> _eventController = 
+  final StreamController<StreamingEvent> _eventController =
       StreamController<StreamingEvent>.broadcast();
-  final StreamController<String> _errorController = 
+  final StreamController<String> _errorController =
       StreamController<String>.broadcast();
-  
+
   Timer? _durationTimer;
   bool _isConnected = false;
 
-  StreamingMonitor({
-    required this.accessToken,
-    this.maxDuration,
-  });
+  StreamingMonitor({required this.accessToken, this.maxDuration});
 
   /// Stream of streaming events.
   Stream<StreamingEvent> get events => _eventController.stream;
@@ -108,9 +102,10 @@ class StreamingMonitor {
     }
 
     try {
-      final url = '${RestreamConfig.streamingWebSocketUrl}?accessToken=$accessToken';
+      final url =
+          '${RestreamConfig.streamingWebSocketUrl}?accessToken=$accessToken';
       _channel = WebSocketChannel.connect(Uri.parse(url));
-      
+
       _messageSubscription = _channel!.stream.listen(
         _handleMessage,
         onError: _handleError,

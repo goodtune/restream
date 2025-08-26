@@ -20,16 +20,16 @@ class RestreamClient {
   final TokenStorage tokenStorage;
   final http.Client _httpClient;
   late final OAuthFlow _oauthFlow;
-  
+
   String? _accessToken;
 
   RestreamClient({
     RestreamConfig? config,
     TokenStorage? tokenStorage,
     http.Client? httpClient,
-  })  : config = config ?? RestreamConfig.fromEnvironment(),
-        tokenStorage = tokenStorage ?? MemoryTokenStorage(),
-        _httpClient = httpClient ?? http.Client() {
+  }) : config = config ?? RestreamConfig.fromEnvironment(),
+       tokenStorage = tokenStorage ?? MemoryTokenStorage(),
+       _httpClient = httpClient ?? http.Client() {
     _oauthFlow = OAuthFlow(config: this.config, httpClient: _httpClient);
   }
 
@@ -39,7 +39,7 @@ class RestreamClient {
     if (tokens != null) {
       try {
         final tokenInfo = TokenInfo.fromTokenData(tokens);
-        
+
         // If token is expired but we have a refresh token, try to refresh
         if (tokenInfo.isExpired && tokenInfo.canRefresh) {
           await _refreshAccessToken(tokenInfo.refreshToken!);
@@ -59,7 +59,12 @@ class RestreamClient {
   /// Generate authorization URL for OAuth flow.
   String buildAuthorizationUrl({
     required String redirectUri,
-    List<String> scopes = const ['profile.read', 'stream.read', 'channel.read', 'channel.write'],
+    List<String> scopes = const [
+      'profile.read',
+      'stream.read',
+      'channel.read',
+      'channel.write',
+    ],
     String? state,
     bool usePkce = true,
   }) {
@@ -104,16 +109,28 @@ class RestreamClient {
 
   /// Get list of available platforms.
   Future<List<Platform>> getPlatforms() async {
-    final response = await _makeRequest('GET', '/platform/all', requireAuth: false);
+    final response = await _makeRequest(
+      'GET',
+      '/platform/all',
+      requireAuth: false,
+    );
     final platforms = response as List;
-    return platforms.map((p) => Platform.fromJson(p as Map<String, dynamic>)).toList();
+    return platforms
+        .map((p) => Platform.fromJson(p as Map<String, dynamic>))
+        .toList();
   }
 
   /// Get list of available servers.
   Future<List<Server>> getServers() async {
-    final response = await _makeRequest('GET', '/server/all', requireAuth: false);
+    final response = await _makeRequest(
+      'GET',
+      '/server/all',
+      requireAuth: false,
+    );
     final servers = response as List;
-    return servers.map((s) => Server.fromJson(s as Map<String, dynamic>)).toList();
+    return servers
+        .map((s) => Server.fromJson(s as Map<String, dynamic>))
+        .toList();
   }
 
   /// Get channel details.
@@ -124,7 +141,11 @@ class RestreamClient {
 
   /// Update channel active status.
   Future<void> updateChannel(int channelId, {required bool active}) async {
-    await _makeRequest('PATCH', '/user/channel/$channelId', body: {'active': active});
+    await _makeRequest(
+      'PATCH',
+      '/user/channel/$channelId',
+      body: {'active': active},
+    );
   }
 
   /// Get channel metadata.
@@ -161,20 +182,27 @@ class RestreamClient {
     if (source != null) params['source'] = source.toString();
     if (scheduled != null) params['scheduled'] = scheduled.toString();
 
-    final queryString = params.isNotEmpty 
+    final queryString = params.isNotEmpty
         ? '?${params.entries.map((e) => '${e.key}=${e.value}').join('&')}'
         : '';
 
-    final response = await _makeRequest('GET', '/user/events/upcoming$queryString');
+    final response = await _makeRequest(
+      'GET',
+      '/user/events/upcoming$queryString',
+    );
     final events = response as List;
-    return events.map((e) => StreamEvent.fromJson(e as Map<String, dynamic>)).toList();
+    return events
+        .map((e) => StreamEvent.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   /// List in-progress events.
   Future<List<StreamEvent>> listInProgressEvents() async {
     final response = await _makeRequest('GET', '/user/events/in-progress');
     final events = response as List;
-    return events.map((e) => StreamEvent.fromJson(e as Map<String, dynamic>)).toList();
+    return events
+        .map((e) => StreamEvent.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   /// List event history.
@@ -186,9 +214,11 @@ class RestreamClient {
       'GET',
       '/user/events/history?page=$page&limit=$limit',
     );
-    
+
     final items = response['items'] as List;
-    return items.map((e) => StreamEvent.fromJson(e as Map<String, dynamic>)).toList();
+    return items
+        .map((e) => StreamEvent.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   /// Get primary stream key.
@@ -199,7 +229,10 @@ class RestreamClient {
 
   /// Get event-specific stream key.
   Future<StreamKey> getEventStreamKey(String eventId) async {
-    final response = await _makeRequest('GET', '/user/events/$eventId/streamKey');
+    final response = await _makeRequest(
+      'GET',
+      '/user/events/$eventId/streamKey',
+    );
     return StreamKey.fromJson(response);
   }
 
@@ -212,7 +245,9 @@ class RestreamClient {
     bool requireAuth = true,
   }) async {
     if (requireAuth && !isAuthenticated) {
-      throw AuthenticationException('Authentication required for this operation');
+      throw AuthenticationException(
+        'Authentication required for this operation',
+      );
     }
 
     final url = Uri.parse('${config.baseUrl}$endpoint');
@@ -298,14 +333,16 @@ class RestreamClient {
       // Wait before retrying (exponential backoff)
       if (attempt < config.maxRetries) {
         final delay = Duration(
-          milliseconds: (config.retryBackoffFactor * 1000 * pow(2, attempt)).round(),
+          milliseconds: (config.retryBackoffFactor * 1000 * pow(2, attempt))
+              .round(),
         );
         await Future.delayed(delay);
       }
     }
 
     // If we get here, all retries failed
-    throw lastException ?? NetworkException('Request failed after ${config.maxRetries} retries');
+    throw lastException ??
+        NetworkException('Request failed after ${config.maxRetries} retries');
   }
 
   String _parseErrorMessage(http.Response response) {
@@ -314,7 +351,9 @@ class RestreamClient {
       final message = data['error'] ?? data['message'] ?? 'Unknown error';
       return message as String;
     } catch (_) {
-      return response.body.isNotEmpty ? response.body : 'HTTP ${response.statusCode}';
+      return response.body.isNotEmpty
+          ? response.body
+          : 'HTTP ${response.statusCode}';
     }
   }
 

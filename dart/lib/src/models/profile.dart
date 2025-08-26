@@ -7,10 +7,10 @@ part 'profile.g.dart';
 class Profile {
   /// User ID.
   final int id;
-  
+
   /// Username.
   final String username;
-  
+
   /// Email address.
   final String email;
 
@@ -21,7 +21,8 @@ class Profile {
   });
 
   /// Creates a Profile from JSON data.
-  factory Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
+  factory Profile.fromJson(Map<String, dynamic> json) =>
+      _$ProfileFromJson(json);
 
   /// Converts this Profile to JSON.
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
@@ -29,9 +30,9 @@ class Profile {
   @override
   String toString() {
     return 'Profile Information:\n'
-           '  ID: $id\n'
-           '  Username: $username\n'
-           '  Email: $email';
+        '  ID: $id\n'
+        '  Username: $username\n'
+        '  Email: $email';
   }
 
   @override

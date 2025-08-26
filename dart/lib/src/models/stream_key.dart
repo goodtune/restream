@@ -7,18 +7,14 @@ part 'stream_key.g.dart';
 class StreamKey {
   /// The stream key/token.
   final String key;
-  
+
   /// RTMP URL for streaming.
   final String rtmpUrl;
-  
+
   /// SRT URL for streaming (if available).
   final String? srtUrl;
 
-  const StreamKey({
-    required this.key,
-    required this.rtmpUrl,
-    this.srtUrl,
-  });
+  const StreamKey({required this.key, required this.rtmpUrl, this.srtUrl});
 
   /// Creates a StreamKey from JSON data.
   factory StreamKey.fromJson(Map<String, dynamic> json) =>
@@ -33,11 +29,11 @@ class StreamKey {
       ..writeln('Stream Key Information:')
       ..writeln('  Key: ${_maskKey(key)}')
       ..writeln('  RTMP URL: $rtmpUrl');
-    
+
     if (srtUrl != null) {
       buffer.writeln('  SRT URL: $srtUrl');
     }
-    
+
     return buffer.toString().trim();
   }
 

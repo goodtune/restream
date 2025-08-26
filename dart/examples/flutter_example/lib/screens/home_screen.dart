@@ -6,16 +6,14 @@ import '../services/restream_service.dart';
 class HomeScreen extends StatefulWidget {
   final RestreamService restreamService;
 
-  const HomeScreen({
-    super.key,
-    required this.restreamService,
-  });
+  const HomeScreen({super.key, required this.restreamService});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   Profile? _profile;
   List<StreamEvent>? _upcomingEvents;
@@ -77,9 +75,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Logout failed: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Logout failed: $e')));
       }
     }
   }
@@ -91,16 +89,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         title: Text(_profile?.username ?? 'Restream'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadData,
-          ),
+          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
           PopupMenuButton(
             itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'logout',
-                child: Text('Logout'),
-              ),
+              const PopupMenuItem(value: 'logout', child: Text('Logout')),
             ],
             onSelected: (value) {
               if (value == 'logout') {
@@ -122,30 +114,30 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _errorMessage != null
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.error, size: 64, color: Colors.red),
-                      const SizedBox(height: 16),
-                      Text('Error: $_errorMessage'),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: _loadData,
-                        child: const Text('Retry'),
-                      ),
-                    ],
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text('Error: $_errorMessage'),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _loadData,
+                    child: const Text('Retry'),
                   ),
-                )
-              : TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _buildProfileTab(),
-                    _buildEventsTab(),
-                    _buildStreamKeyTab(),
-                    _buildChatTab(),
-                  ],
-                ),
+                ],
+              ),
+            )
+          : TabBarView(
+              controller: _tabController,
+              children: [
+                _buildProfileTab(),
+                _buildEventsTab(),
+                _buildStreamKeyTab(),
+                _buildChatTab(),
+              ],
+            ),
     );
   }
 
@@ -258,7 +250,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   Widget _buildStreamKeyTab() {
-    if (_streamKey == null) return const Center(child: Text('No stream key data'));
+    if (_streamKey == null)
+      return const Center(child: Text('No stream key data'));
 
     return Padding(
       padding: const EdgeInsets.all(16.0),

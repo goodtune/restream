@@ -7,19 +7,19 @@ part 'server.g.dart';
 class Server {
   /// Server ID.
   final int id;
-  
+
   /// Server name/identifier.
   final String name;
-  
+
   /// Server URL.
   final String url;
-  
+
   /// RTMP URL for streaming.
   final String rtmpUrl;
-  
+
   /// Server latitude coordinate.
   final String latitude;
-  
+
   /// Server longitude coordinate.
   final String longitude;
 
@@ -33,8 +33,7 @@ class Server {
   });
 
   /// Creates a Server from JSON data.
-  factory Server.fromJson(Map<String, dynamic> json) =>
-      _$ServerFromJson(json);
+  factory Server.fromJson(Map<String, dynamic> json) => _$ServerFromJson(json);
 
   /// Converts this Server to JSON.
   Map<String, dynamic> toJson() => _$ServerToJson(this);
@@ -42,18 +41,16 @@ class Server {
   @override
   String toString() {
     return 'Server: $name\n'
-           '  ID: $id\n'
-           '  URL: $url\n'
-           '  RTMP URL: $rtmpUrl\n'
-           '  Location: $latitude, $longitude';
+        '  ID: $id\n'
+        '  URL: $url\n'
+        '  RTMP URL: $rtmpUrl\n'
+        '  Location: $latitude, $longitude';
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Server &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+      other is Server && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;

@@ -1,5 +1,5 @@
 /// Configuration management for the Restream.io client.
-/// 
+///
 /// This module handles configuration settings including API base URLs,
 /// client credentials, and other settings.
 library;
@@ -8,34 +8,35 @@ library;
 class RestreamConfig {
   /// Default API base URL.
   static const String defaultBaseUrl = 'https://api.restream.io/v2';
-  
+
   /// OAuth token endpoint.
   static const String tokenEndpoint = 'https://api.restream.io/oauth/token';
-  
+
   /// OAuth authorization endpoint.
   static const String authEndpoint = 'https://api.restream.io/oauth/authorize';
-  
+
   /// WebSocket streaming endpoint base.
-  static const String streamingWebSocketUrl = 'wss://streaming.api.restream.io/ws';
-  
+  static const String streamingWebSocketUrl =
+      'wss://streaming.api.restream.io/ws';
+
   /// WebSocket chat endpoint base.
   static const String chatWebSocketUrl = 'wss://chat.api.restream.io/ws';
-  
+
   /// API base URL (can be overridden for testing).
   final String baseUrl;
-  
+
   /// OAuth client ID.
   final String? clientId;
-  
+
   /// OAuth client secret (optional for PKCE flow).
   final String? clientSecret;
-  
+
   /// Request timeout duration.
   final Duration timeout;
-  
+
   /// Number of retry attempts for failed requests.
   final int maxRetries;
-  
+
   /// Backoff factor for retry attempts.
   final double retryBackoffFactor;
 
@@ -84,12 +85,12 @@ class RestreamConfig {
   @override
   String toString() {
     return 'RestreamConfig{\n'
-           '  baseUrl: $baseUrl,\n'
-           '  clientId: ${hasClientId ? '***' : 'null'},\n'
-           '  clientSecret: ${hasClientSecret ? '***' : 'null'},\n'
-           '  timeout: $timeout,\n'
-           '  maxRetries: $maxRetries,\n'
-           '  retryBackoffFactor: $retryBackoffFactor\n'
-           '}';
+        '  baseUrl: $baseUrl,\n'
+        '  clientId: ${hasClientId ? '***' : 'null'},\n'
+        '  clientSecret: ${hasClientSecret ? '***' : 'null'},\n'
+        '  timeout: $timeout,\n'
+        '  maxRetries: $maxRetries,\n'
+        '  retryBackoffFactor: $retryBackoffFactor\n'
+        '}';
   }
 }

@@ -7,10 +7,10 @@ part 'event_destination.g.dart';
 class EventDestination {
   /// Channel ID for the destination.
   final int channelId;
-  
+
   /// External URL if available (e.g., YouTube watch URL).
   final String? externalUrl;
-  
+
   /// Streaming platform ID.
   final int streamingPlatformId;
 
@@ -32,11 +32,11 @@ class EventDestination {
     final buffer = StringBuffer()
       ..writeln('Channel ID: $channelId')
       ..writeln('Platform ID: $streamingPlatformId');
-    
+
     if (externalUrl != null) {
       buffer.writeln('External URL: $externalUrl');
     }
-    
+
     return buffer.toString().trim();
   }
 
@@ -51,7 +51,5 @@ class EventDestination {
 
   @override
   int get hashCode =>
-      channelId.hashCode ^
-      externalUrl.hashCode ^
-      streamingPlatformId.hashCode;
+      channelId.hashCode ^ externalUrl.hashCode ^ streamingPlatformId.hashCode;
 }

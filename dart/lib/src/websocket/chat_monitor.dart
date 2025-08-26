@@ -32,15 +32,12 @@ class ChatEvent {
 
   factory ChatEvent.fromJson(Map<String, dynamic> json) {
     final action = json['action'] as String? ?? 'unknown';
-    final payload = json['payload'] as Map<String, dynamic>? ?? <String, dynamic>{};
-    
+    final payload =
+        json['payload'] as Map<String, dynamic>? ?? <String, dynamic>{};
+
     final type = _parseEventType(action);
-    
-    return ChatEvent(
-      type: type,
-      action: action,
-      payload: payload,
-    );
+
+    return ChatEvent(type: type, action: action, payload: payload);
   }
 
   static ChatEventType _parseEventType(String action) {
@@ -68,7 +65,7 @@ class ChatEvent {
   /// Extract chat message information if this is a chat message event.
   ChatMessage? get chatMessage {
     if (type != ChatEventType.chatMessage) return null;
-    
+
     try {
       return ChatMessage.fromPayload(payload);
     } catch (_) {
@@ -79,11 +76,11 @@ class ChatEvent {
   @override
   String toString() {
     return 'ChatEvent{\n'
-           '  type: $type,\n'
-           '  action: $action,\n'
-           '  payload: $payload,\n'
-           '  timestamp: $timestamp\n'
-           '}';
+        '  type: $type,\n'
+        '  action: $action,\n'
+        '  payload: $payload,\n'
+        '  timestamp: $timestamp\n'
+        '}';
   }
 }
 
@@ -108,7 +105,7 @@ class ChatMessage {
     final username = payload['username'] as String? ?? 'Unknown';
     final message = payload['message'] as String? ?? '';
     final platform = payload['platform'] as String? ?? 'Unknown';
-    
+
     // Try to parse timestamp from payload
     DateTime timestamp = DateTime.now();
     final timestampValue = payload['timestamp'];
@@ -137,21 +134,18 @@ class ChatMessage {
 class ChatMonitor {
   final String accessToken;
   final Duration? maxDuration;
-  
+
   WebSocketChannel? _channel;
   StreamSubscription? _messageSubscription;
-  final StreamController<ChatEvent> _eventController = 
+  final StreamController<ChatEvent> _eventController =
       StreamController<ChatEvent>.broadcast();
-  final StreamController<String> _errorController = 
+  final StreamController<String> _errorController =
       StreamController<String>.broadcast();
-  
+
   Timer? _durationTimer;
   bool _isConnected = false;
 
-  ChatMonitor({
-    required this.accessToken,
-    this.maxDuration,
-  });
+  ChatMonitor({required this.accessToken, this.maxDuration});
 
   /// Stream of chat events.
   Stream<ChatEvent> get events => _eventController.stream;
@@ -176,7 +170,7 @@ class ChatMonitor {
     try {
       final url = '${RestreamConfig.chatWebSocketUrl}?accessToken=$accessToken';
       _channel = WebSocketChannel.connect(Uri.parse(url));
-      
+
       _messageSubscription = _channel!.stream.listen(
         _handleMessage,
         onError: _handleError,

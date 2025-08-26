@@ -5,10 +5,10 @@ import 'dart:io';
 abstract class TokenStorage {
   /// Save OAuth tokens.
   Future<void> saveTokens(Map<String, dynamic> tokens);
-  
+
   /// Load OAuth tokens.
   Future<Map<String, dynamic>?> loadTokens();
-  
+
   /// Clear stored tokens.
   Future<void> clearTokens();
 }
@@ -41,11 +41,12 @@ class FileTokenStorage implements TokenStorage {
 
   /// Default file storage in user's config directory.
   factory FileTokenStorage.defaultPath() {
-    final home = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
+    final home =
+        Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'];
     if (home == null) {
       throw StateError('Unable to determine home directory');
     }
-    
+
     final configDir = '$home/.config/restream_dart';
     return FileTokenStorage('$configDir/tokens.json');
   }
@@ -53,14 +54,14 @@ class FileTokenStorage implements TokenStorage {
   @override
   Future<void> saveTokens(Map<String, dynamic> tokens) async {
     final file = File(filePath);
-    
+
     // Create directory if it doesn't exist
     await file.parent.create(recursive: true);
-    
+
     // Set restrictive permissions (owner read/write only)
     final jsonContent = jsonEncode(tokens);
     await file.writeAsString(jsonContent);
-    
+
     // Set file permissions to 600 (owner read/write only) on Unix systems
     if (!Platform.isWindows) {
       await Process.run('chmod', ['600', filePath]);
@@ -70,11 +71,11 @@ class FileTokenStorage implements TokenStorage {
   @override
   Future<Map<String, dynamic>?> loadTokens() async {
     final file = File(filePath);
-    
+
     if (!await file.exists()) {
       return null;
     }
-    
+
     try {
       final content = await file.readAsString();
       return jsonDecode(content) as Map<String, dynamic>;
@@ -113,7 +114,7 @@ class TokenInfo {
     }
 
     final refreshToken = data['refresh_token'] as String?;
-    
+
     DateTime? expiresAt;
     final expiresIn = data['expires_in'] as int?;
     if (expiresIn != null) {
@@ -130,7 +131,7 @@ class TokenInfo {
   /// Check if the access token is expired or close to expiring.
   bool get isExpired {
     if (expiresAt == null) return false;
-    
+
     // Consider token expired if it expires within the next 5 minutes
     final buffer = Duration(minutes: 5);
     return DateTime.now().add(buffer).isAfter(expiresAt!);
@@ -142,11 +143,11 @@ class TokenInfo {
   @override
   String toString() {
     return 'TokenInfo{\n'
-           '  accessToken: ${_maskToken(accessToken)},\n'
-           '  refreshToken: ${refreshToken != null ? _maskToken(refreshToken!) : 'null'},\n'
-           '  expiresAt: $expiresAt,\n'
-           '  isExpired: $isExpired\n'
-           '}';
+        '  accessToken: ${_maskToken(accessToken)},\n'
+        '  refreshToken: ${refreshToken != null ? _maskToken(refreshToken!) : 'null'},\n'
+        '  expiresAt: $expiresAt,\n'
+        '  isExpired: $isExpired\n'
+        '}';
   }
 
   String _maskToken(String token) {

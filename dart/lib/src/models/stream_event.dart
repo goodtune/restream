@@ -9,37 +9,37 @@ part 'stream_event.g.dart';
 class StreamEvent {
   /// Event ID.
   final String id;
-  
+
   /// Show ID if available.
   final String? showId;
-  
+
   /// Current status of the event (e.g., 'live', 'ended', 'scheduled').
   final String status;
-  
+
   /// Event title.
   final String title;
-  
+
   /// Event description.
   final String description;
-  
+
   /// Whether this is an instant stream.
   final bool isInstant;
-  
+
   /// Whether this is record-only mode.
   final bool isRecordOnly;
-  
+
   /// Cover image URL if available.
   final String? coverUrl;
-  
+
   /// Scheduled start time as Unix timestamp in seconds.
   final int? scheduledFor;
-  
+
   /// Actual start time as Unix timestamp in seconds.
   final int? startedAt;
-  
+
   /// End time as Unix timestamp in seconds.
   final int? finishedAt;
-  
+
   /// List of destinations where this event is broadcast.
   final List<EventDestination> destinations;
 
@@ -66,16 +66,19 @@ class StreamEvent {
   Map<String, dynamic> toJson() => _$StreamEventToJson(this);
 
   /// Gets the scheduled date as a DateTime if available.
-  DateTime? get scheduledDate =>
-      scheduledFor != null ? DateTime.fromMillisecondsSinceEpoch(scheduledFor! * 1000) : null;
+  DateTime? get scheduledDate => scheduledFor != null
+      ? DateTime.fromMillisecondsSinceEpoch(scheduledFor! * 1000)
+      : null;
 
   /// Gets the started date as a DateTime if available.
-  DateTime? get startedDate =>
-      startedAt != null ? DateTime.fromMillisecondsSinceEpoch(startedAt! * 1000) : null;
+  DateTime? get startedDate => startedAt != null
+      ? DateTime.fromMillisecondsSinceEpoch(startedAt! * 1000)
+      : null;
 
   /// Gets the finished date as a DateTime if available.
-  DateTime? get finishedDate =>
-      finishedAt != null ? DateTime.fromMillisecondsSinceEpoch(finishedAt! * 1000) : null;
+  DateTime? get finishedDate => finishedAt != null
+      ? DateTime.fromMillisecondsSinceEpoch(finishedAt! * 1000)
+      : null;
 
   @override
   String toString() {
@@ -92,7 +95,9 @@ class StreamEvent {
     }
 
     if (scheduledDate != null) {
-      buffer.writeln('  Scheduled: ${scheduledDate!.toUtc().toIso8601String()}');
+      buffer.writeln(
+        '  Scheduled: ${scheduledDate!.toUtc().toIso8601String()}',
+      );
     }
 
     if (startedDate != null) {

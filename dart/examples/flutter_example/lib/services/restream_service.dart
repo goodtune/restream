@@ -18,9 +18,9 @@ class SharedPreferencesTokenStorage implements TokenStorage {
   Future<Map<String, dynamic>?> loadTokens() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString(_tokensKey);
-    
+
     if (jsonString == null) return null;
-    
+
     try {
       return jsonDecode(jsonString) as Map<String, dynamic>;
     } catch (e) {
@@ -64,7 +64,7 @@ class RestreamService {
   /// Start OAuth authentication flow.
   Future<String> startAuthFlow() async {
     _pendingPkce = PkceParameters.generate();
-    
+
     return _client.buildAuthorizationUrl(
       redirectUri: 'restreamapp://oauth/callback',
       scopes: ['profile.read', 'stream.read', 'channel.read', 'channel.write'],

@@ -30,14 +30,14 @@ class _AuthScreenState extends State<AuthScreen> {
     try {
       // Start OAuth flow
       final authUrl = await widget.restreamService.startAuthFlow();
-      
+
       // Launch browser
       if (await canLaunchUrl(Uri.parse(authUrl))) {
         await launchUrl(
           Uri.parse(authUrl),
           mode: LaunchMode.externalApplication,
         );
-        
+
         // In a real app, you'd handle the deep link callback here
         // For this example, we'll show a dialog with instructions
         _showCallbackInstructions();
@@ -85,7 +85,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _showManualCodeEntry() {
     final codeController = TextEditingController();
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -155,18 +155,11 @@ class _AuthScreenState extends State<AuthScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.live_tv,
-              size: 120,
-              color: Colors.blue,
-            ),
+            const Icon(Icons.live_tv, size: 120, color: Colors.blue),
             const SizedBox(height: 32),
             const Text(
               'Welcome to Restream',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             const Text(
@@ -203,7 +196,9 @@ class _AuthScreenState extends State<AuthScreen> {
                       )
                     : const Icon(Icons.login),
                 label: Text(
-                  _isAuthenticating ? 'Authenticating...' : 'Connect to Restream',
+                  _isAuthenticating
+                      ? 'Authenticating...'
+                      : 'Connect to Restream',
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -215,10 +210,7 @@ class _AuthScreenState extends State<AuthScreen> {
             const SizedBox(height: 24),
             const Text(
               'Your credentials are stored securely on your device.',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey,
-              ),
+              style: TextStyle(fontSize: 12, color: Colors.grey),
             ),
           ],
         ),

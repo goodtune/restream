@@ -7,14 +7,11 @@ part 'platform_image.g.dart';
 class PlatformImage {
   /// PNG image URL.
   final String png;
-  
+
   /// SVG image URL.
   final String svg;
 
-  const PlatformImage({
-    required this.png,
-    required this.svg,
-  });
+  const PlatformImage({required this.png, required this.svg});
 
   /// Creates a PlatformImage from JSON data.
   factory PlatformImage.fromJson(Map<String, dynamic> json) =>
