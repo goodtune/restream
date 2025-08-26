@@ -32,13 +32,19 @@ jobs:
       with:
         dart-version: ${{ matrix.dart-version }}
 
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.1'
+        cache: true
+
     - name: Get dependencies
       working-directory: dart
       run: dart pub get
 
     - name: Get Flutter example dependencies
       working-directory: dart/examples/flutter_example
-      run: dart pub get
+      run: flutter pub get
 
     - name: Verify formatting
       working-directory: dart
