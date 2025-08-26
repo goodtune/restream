@@ -1,94 +1,132 @@
-# restream.io CLI
+# Restream.io Multi-Language SDK
 
-Python command-line tool to interact with the Restream.io API.
+Unofficial multi-language SDKs and tools for the Restream.io API, including client libraries and command-line interfaces.
 
-## Bootstrapping
+## Project Structure
 
-Requires [`uv`](https://docs.astral.sh/uv/) installed.
-
-```bash
-uv sync
+```
+/
+├── README.md                    # This file
+├── docs/                        # API documentation and guides
+├── python/                      # Python client library
+├── dart/                        # Dart client library
+│   └── examples/
+│       └── flutter_example/     # Flutter example app
+└── cli/
+    └── python/                  # Python CLI tool (installs as restream.io)
 ```
 
-## Basic commands
+## Client Libraries
 
-### Public endpoints (no authentication required)
+### Python - pyrestream
 
-- `restream.io platforms` - list available streaming platforms
-- `restream.io servers` - list available streaming servers
+A Python client library for the Restream.io REST API and WebSocket APIs.
 
-### Authentication
+**Installation:**
+```bash
+pip install pyrestream
+```
 
-- `restream.io login` - perform OAuth2 login flow (opens browser, listens locally)
+**Usage:**
+```python
+from pyrestream import RestreamClient
 
-### User profile
+client = RestreamClient.from_config()
+profile = client.get_profile()
+print(f"Hello, {profile.displayName}!")
+```
 
-- `restream.io profile` - show user profile
+[📚 Python Library Documentation](python/README.md)
 
-### Channel management
+### Dart - restream
 
-- `restream.io channel list` - list channels
-- `restream.io channel get <id>` - fetch specific channel
-- `restream.io channel set <id>` - update channel settings
-- `restream.io channel meta get` - get channel metadata
-- `restream.io channel meta set` - update channel metadata
+A Dart library for the Restream.io API, designed for Flutter and Dart applications.
 
-### Event management
+**Installation:**
+```yaml
+dependencies:
+  restream: ^0.1.0
+```
 
-- `restream.io event list` - list events
+**Usage:**
+```dart
+import 'package:restream/restream.dart';
 
-### Utility
+final client = RestreamClient();
+final profile = await client.getProfile();
+print('Hello, ${profile.displayName}!');
+```
 
-- `restream.io version` - show dynamic version derived from git tags
+[📚 Dart Library Documentation](dart/README.md)
 
-## Configuration
+## Command-Line Tools
 
-### Storage Location
+### Python CLI - restream.io
 
-Tokens and configuration are stored securely in the user's platform-appropriate
-config directory:
-- **Linux/macOS**: `~/.config/restream.io/`
-- **Windows**: `%APPDATA%\restream.io\`
+A command-line interface for interacting with the Restream.io API.
 
-The configuration directory location can be overridden using the
-`RESTREAM_CONFIG_PATH` environment variable.
+**Installation:**
+```bash
+pip install restream.io
+```
 
-### Environment Variables
+**Usage:**
+```bash
+# Authenticate
+restream.io login
 
-The following environment variables are required for OAuth2 authentication:
+# Get profile
+restream.io profile
 
-- `RESTREAM_CLIENT_ID`: OAuth2 client ID (required)
-- `RESTREAM_CLIENT_SECRET`: OAuth2 client secret (required)
+# List channels
+restream.io channel list
 
-Additional optional configuration:
+# Monitor live streaming
+restream.io monitor streaming
+```
 
-- `RESTREAM_CONFIG_PATH`: Override the default configuration directory
-  path
+[📚 CLI Documentation](cli/python/README.md)
 
-Before using the login command, ensure both authentication variables are set:
+## API Documentation
 
+Comprehensive documentation for all Restream.io APIs is available in the `docs/` directory:
+
+- [📖 API Reference](docs/developers.restream.io/README.md)
+- [🚀 Getting Started Guide](docs/developers.restream.io/GUIDE.md)
+
+## Authentication
+
+All libraries and tools use OAuth2 authentication. You'll need:
+
+- **Client ID**: OAuth2 client ID 
+- **Client Secret**: OAuth2 client secret
+
+Set these as environment variables:
 ```bash
 export RESTREAM_CLIENT_ID="your_client_id_here"
 export RESTREAM_CLIENT_SECRET="your_client_secret_here"
-restream.io login
 ```
 
-### Security
+## Contributing
 
-- Configuration directory is created with `0o700` permissions (owner
-  read/write/execute only)
-- Token files are created with `0o600` permissions (owner read/write only)
-- Tokens are stored in JSON format in `tokens.json` within the config
-  directory
+Each language implementation follows its own conventions:
 
-## Development
+### Python
+- Uses `uv` for dependency management
+- Follow PEP 8 style guidelines  
+- Run tests with `uv run pytest`
 
-Run tests:
+### Dart
+- Follow Dart/Flutter conventions
+- Run tests with `dart test`
+- Use `dart format` for formatting
 
-```bash
-uv run pytest
-```
+## License
 
-## Roadmap
+See individual package LICENSE files for details.
 
-See `AGENTS.md` for AI agent instructions and extension points.
+## Support
+
+- 🐛 [Report Issues](https://github.com/goodtune/restream/issues)
+- 📖 [API Documentation](https://developers.restream.io/)
+- 💬 [Community Support](https://developers.restream.io/)

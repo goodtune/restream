@@ -1,0 +1,76 @@
+name: Publish Python Packages
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-client:
+    name: Publish pyrestream to PyPI
+    runs-on: ubuntu-latest
+    if: github.event.release.tag_name != '' # Only run on tagged releases
+
+    environment:
+      name: pypi-client
+      url: https://pypi.org/p/pyrestream
+
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history needed for setuptools_scm
+          fetch-tags: true
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Build client library
+        working-directory: python
+        run: uv build
+
+      - name: Publish pyrestream to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist/
+          print-hash: true
+
+  publish-cli:
+    name: Publish restream.io CLI to PyPI
+    runs-on: ubuntu-latest
+    needs: publish-client  # CLI depends on client library
+    if: github.event.release.tag_name != '' # Only run on tagged releases
+
+    environment:
+      name: pypi-cli
+      url: https://pypi.org/p/restream.io
+
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history needed for setuptools_scm
+          fetch-tags: true
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Wait for pyrestream to be available
+        run: |
+          echo "Waiting for pyrestream to be available on PyPI..."
+          sleep 60  # Wait 1 minute for PyPI to update
+
+      - name: Build CLI
+        working-directory: cli/python
+        run: uv build
+
+      - name: Publish restream.io to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: cli/python/dist/
+          print-hash: true

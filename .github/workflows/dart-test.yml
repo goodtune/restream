@@ -1,0 +1,88 @@
+name: Dart Library Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'dart/**'
+      - '!dart/examples/**'
+      - 'dart/examples/**'
+      - '.github/workflows/dart-test.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'dart/**'
+      - '!dart/examples/**'
+      - 'dart/examples/**'
+      - '.github/workflows/dart-test.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dart-version: ['3.9.0', 'stable']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Dart
+      uses: dart-lang/setup-dart@v1
+      with:
+        dart-version: ${{ matrix.dart-version }}
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.1'
+        cache: true
+
+    - name: Get dependencies
+      working-directory: dart
+      run: dart pub get
+
+    - name: Get Flutter example dependencies
+      working-directory: dart/examples/flutter_example
+      run: flutter pub get
+
+    - name: Verify formatting
+      working-directory: dart
+      run: dart format --output=none --set-exit-if-changed .
+
+    - name: Analyze project source
+      working-directory: dart
+      run: dart analyze --fatal-infos lib test
+
+    - name: Run tests
+      working-directory: dart
+      run: dart test
+
+  test-flutter-example:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.1'
+        cache: true
+
+    - name: Get dependencies for library
+      working-directory: dart
+      run: flutter pub get
+
+    - name: Get dependencies for example
+      working-directory: dart/examples/flutter_example
+      run: flutter pub get
+
+    - name: Analyze example
+      working-directory: dart/examples/flutter_example
+      run: flutter analyze
+
+    - name: Test example builds
+      working-directory: dart/examples/flutter_example
+      run: flutter build web --wasm --debug

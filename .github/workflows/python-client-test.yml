@@ -1,0 +1,48 @@
+name: Python Client Library Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'python/**'
+      - '.github/workflows/python-client-test.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'python/**'
+      - '.github/workflows/python-client-test.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        # Fetch full history including tags for setuptools_scm
+        fetch-depth: 0
+        fetch-tags: true
+
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v6
+
+    - name: Set up Python ${{ matrix.python-version }}
+      run: uv python install ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      working-directory: python
+      run: uv sync
+
+    - name: Run tests
+      working-directory: python
+      run: uv run pytest
+
+    - name: Test package import
+      working-directory: python
+      run: |
+        uv run python -c "from pyrestream import RestreamClient; print('Import successful')"
