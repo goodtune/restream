@@ -114,30 +114,30 @@ class _HomeScreenState extends State<HomeScreen>
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _errorMessage != null
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error, size: 64, color: Colors.red),
-                  const SizedBox(height: 16),
-                  Text('Error: $_errorMessage'),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _loadData,
-                    child: const Text('Retry'),
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.error, size: 64, color: Colors.red),
+                      const SizedBox(height: 16),
+                      Text('Error: $_errorMessage'),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: _loadData,
+                        child: const Text('Retry'),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )
-          : TabBarView(
-              controller: _tabController,
-              children: [
-                _buildProfileTab(),
-                _buildEventsTab(),
-                _buildStreamKeyTab(),
-                _buildChatTab(),
-              ],
-            ),
+                )
+              : TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildProfileTab(),
+                    _buildEventsTab(),
+                    _buildStreamKeyTab(),
+                    _buildChatTab(),
+                  ],
+                ),
     );
   }
 
