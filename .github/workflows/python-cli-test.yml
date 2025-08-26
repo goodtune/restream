@@ -42,9 +42,7 @@ jobs:
 
     - name: Install CLI with dependencies
       working-directory: cli/python
-      run: |
-        uv sync
-        uv add ../../python/dist/*.whl
+      run: uv sync --find-links ../../python/dist/
 
     - name: Run CLI tests
       working-directory: cli/python
