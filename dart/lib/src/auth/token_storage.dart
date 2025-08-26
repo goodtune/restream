@@ -47,7 +47,7 @@ class FileTokenStorage implements TokenStorage {
       throw StateError('Unable to determine home directory');
     }
 
-    final configDir = '$home/.config/restream_dart';
+    final configDir = '$home/.config/restream';
     return FileTokenStorage('$configDir/tokens.json');
   }
 

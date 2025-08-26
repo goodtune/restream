@@ -1,6 +1,7 @@
 name: restream_flutter_example
-description: A Flutter example app demonstrating the restream_dart library.
+description: A Flutter example app demonstrating the restream library.
 version: 1.0.0+1
+publish_to: none
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'package:restream_dart/restream_dart.dart';
+import 'package:restream/restream.dart';
 
 void main() {
   group('Restream Dart Library Tests', () {

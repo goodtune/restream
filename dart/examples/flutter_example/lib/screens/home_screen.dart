@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restream_dart/restream_dart.dart';
+import 'package:restream/restream.dart';
 
 import '../services/restream_service.dart';
 
@@ -250,8 +250,9 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildStreamKeyTab() {
-    if (_streamKey == null)
+    if (_streamKey == null) {
       return const Center(child: Text('No stream key data'));
+    }
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -334,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           SizedBox(height: 8),
           Text(
-            'Real-time chat monitoring would be implemented here using the ChatMonitor from the restream_dart library.',
+            'Real-time chat monitoring would be implemented here using the ChatMonitor from the restream library.',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey),
           ),

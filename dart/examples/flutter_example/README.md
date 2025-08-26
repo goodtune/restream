@@ -1,6 +1,6 @@
 # Flutter Example App for Restream Dart Library
 
-This is a complete Flutter example app demonstrating how to integrate the `restream_dart` library into a Flutter application.
+This is a complete Flutter example app demonstrating how to integrate the `restream` library into a Flutter application.
 
 ## Features Demonstrated
 
@@ -19,7 +19,7 @@ This is a complete Flutter example app demonstrating how to integrate the `restr
 lib/
 ├── main.dart                    # App entry point and navigation
 ├── services/
-│   └── restream_service.dart    # Service layer wrapping restream_dart
+│   └── restream_service.dart    # Service layer wrapping restream
 ├── screens/
 │   ├── auth_screen.dart         # OAuth authentication screen
 │   └── home_screen.dart         # Main app screen with tabs
@@ -109,7 +109,7 @@ The app demonstrates a complete OAuth2 flow with PKCE:
 
 ### Service Layer Pattern
 
-The `RestreamService` class provides a clean abstraction over the `restream_dart` library:
+The `RestreamService` class provides a clean abstraction over the `restream` library:
 
 - Manages client lifecycle
 - Handles token storage
@@ -231,4 +231,4 @@ try {
 - [Restream.io API Documentation](https://developers.restream.io/)
 - [Flutter Deep Linking](https://docs.flutter.dev/development/ui/navigation/deep-linking)
 - [OAuth 2.0 with PKCE](https://oauth.net/2/pkce/)
-- [restream_dart Library Documentation](../restream_dart/README.md)
+- [restream Library Documentation](../../README.md)

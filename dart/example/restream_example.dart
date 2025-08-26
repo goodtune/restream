@@ -1,4 +1,4 @@
-import 'package:restream_dart/restream_dart.dart';
+import 'package:restream/restream.dart';
 
 /// Example demonstrating how to use the Restream Dart library.
 ///
@@ -185,20 +185,25 @@ void flutterExample() {
 
 class RestreamService {
   late final RestreamClient _client;
+  late final OAuthFlow _oauthFlow;
   
   RestreamService() {
+    final config = RestreamConfig(
+      clientId: 'your-client-id',
+      // Don't include client secret in mobile apps - use PKCE
+    );
+    
     _client = RestreamClient(
-      config: RestreamConfig(
-        clientId: 'your-client-id',
-        // Don't include client secret in mobile apps - use PKCE
-      ),
+      config: config,
       tokenStorage: SharedPreferencesTokenStorage(), // Custom implementation
     );
+    
+    _oauthFlow = OAuthFlow(config: config);
   }
   
   Future<void> authenticate() async {
     // 1. Generate authorization URL with PKCE
-    final pkce = PkceParameters.generate();
+    final pkce = _oauthFlow.generatePkce();
     final authUrl = _client.buildAuthorizationUrl(
       redirectUri: 'your-app://oauth/callback',
       scopes: ['profile.read', 'stream.read'],

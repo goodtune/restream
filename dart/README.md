@@ -18,7 +18,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  restream_dart: ^0.1.0
+  restream: ^0.1.0
 ```
 
 Then run:
@@ -32,7 +32,7 @@ dart pub get
 ### 1. Basic Setup
 
 ```dart
-import 'package:restream_dart/restream_dart.dart';
+import 'package:restream/restream.dart';
 
 // Configure the client
 final client = RestreamClient(

@@ -14,7 +14,7 @@
 ///
 /// Example usage:
 /// ```dart
-/// import 'package:restream_dart/restream_dart.dart';
+/// import 'package:restream/restream.dart';
 ///
 /// // Initialize client
 /// final client = RestreamClient();

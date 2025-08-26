@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:restream_dart/restream_dart.dart';
+import 'package:restream/restream.dart';
 
 /// SharedPreferences-based token storage for Flutter apps.
 class SharedPreferencesTokenStorage implements TokenStorage {
@@ -40,17 +40,22 @@ class SharedPreferencesTokenStorage implements TokenStorage {
 /// Service class that manages Restream.io API interactions.
 class RestreamService {
   late final RestreamClient _client;
+  late final OAuthFlow _oauthFlow;
   PkceParameters? _pendingPkce;
 
   RestreamService() {
     // Configure with your OAuth app credentials
+    final config = RestreamConfig(
+      clientId: 'your-client-id-here',
+      // Don't include client secret in mobile apps
+    );
+
     _client = RestreamClient(
-      config: RestreamConfig(
-        clientId: 'your-client-id-here',
-        // Don't include client secret in mobile apps
-      ),
+      config: config,
       tokenStorage: SharedPreferencesTokenStorage(),
     );
+
+    _oauthFlow = OAuthFlow(config: config);
   }
 
   /// Initialize the service and load stored tokens.
@@ -63,7 +68,7 @@ class RestreamService {
 
   /// Start OAuth authentication flow.
   Future<String> startAuthFlow() async {
-    _pendingPkce = PkceParameters.generate();
+    _pendingPkce = _oauthFlow.generatePkce();
 
     return _client.buildAuthorizationUrl(
       redirectUri: 'restreamapp://oauth/callback',
@@ -144,14 +149,5 @@ class RestreamService {
   /// Dispose of resources.
   void dispose() {
     _client.dispose();
-  }
-}
-
-/// Extension to generate PKCE parameters.
-extension PkceParametersGeneration on PkceParameters {
-  static PkceParameters generate() {
-    final config = RestreamConfig();
-    final oauthFlow = OAuthFlow(config: config);
-    return oauthFlow.generatePkce();
   }
 }
