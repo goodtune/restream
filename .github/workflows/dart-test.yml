@@ -75,4 +75,4 @@ jobs:
 
     - name: Test example builds
       working-directory: dart/examples/flutter_example
-      run: flutter build apk --debug
+      run: flutter build web --wasm --debug
