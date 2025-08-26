@@ -124,9 +124,7 @@ class TestSchemaIntegration:
             {
                 "id": 1001,
                 "streamingPlatformId": 1,
-                "embedUrl": (
-                    "https://www.youtube.com/embed/live_stream" "?channel=UCabc123"
-                ),
+                "embedUrl": "https://www.youtube.com/embed/live_stream?channel=UCabc123",
                 "url": "https://youtube.com/channel/UCabc123",
                 "identifier": "UCabc123",
                 "displayName": "Gaming Adventures",

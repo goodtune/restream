@@ -37,7 +37,6 @@ class TestWebSocketClient:
             patch("restream_io.websocket.get_access_token", return_value="test_token"),
             patch("websockets.connect", new_callable=AsyncMock) as mock_connect,
         ):
-
             mock_websocket = AsyncMock()
             mock_connect.return_value = mock_websocket
 
@@ -140,7 +139,6 @@ class TestWebSocketClient:
             patch("restream_io.websocket.get_access_token", return_value="test_token"),
             patch("websockets.connect", new_callable=AsyncMock) as mock_connect,
         ):
-
             mock_websocket = AsyncMock()
             mock_websocket.closed = False
 
@@ -185,7 +183,6 @@ class TestWebSocketClient:
             patch("restream_io.websocket.get_access_token", return_value="test_token"),
             patch("websockets.connect", new_callable=AsyncMock) as mock_connect,
         ):
-
             mock_websocket = AsyncMock()
             mock_websocket.closed = False
 

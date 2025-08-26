@@ -116,7 +116,9 @@ def _handle_output(data, json_flag):
 def _handle_api_error(e):
     """Handle API errors with appropriate user messages."""
     if e.status_code == 401:
-        click.echo("Authentication failed. Please run 'restream.io login' first.", err=True)
+        click.echo(
+            "Authentication failed. Please run 'restream.io login' first.", err=True
+        )
     elif e.status_code == 404:
         click.echo("Resource not found.", err=True)
     elif e.status_code == 429:
@@ -140,7 +142,7 @@ def main(ctx, version_flag):
         except Exception:
             click.echo("restream.io CLI (development version)")
         return
-    
+
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
 
@@ -153,7 +155,9 @@ def login(ctx, json):
     try:
         tokens = perform_login()
         if json:
-            click.echo(json_lib.dumps({"status": "success", "message": "Login successful"}))
+            click.echo(
+                json_lib.dumps({"status": "success", "message": "Login successful"})
+            )
         else:
             click.echo("Login successful!")
     except Exception as e:
@@ -184,7 +188,7 @@ def platforms(ctx, json):
     _handle_output(platforms_data, json)
 
 
-# Servers command  
+# Servers command
 @main.command(cls=RestreamCommand)
 @click.pass_context
 def servers(ctx, json):
@@ -233,11 +237,11 @@ def channel_set(ctx, channel_id, title, enabled, json):
         updates["title"] = title
     if enabled is not None:
         updates["enabled"] = enabled
-    
+
     if not updates:
         click.echo("No updates specified", err=True)
         sys.exit(1)
-    
+
     updated_channel = client.update_channel(channel_id, **updates)
     _handle_output(updated_channel, json)
 
@@ -260,7 +264,7 @@ def channel_meta_get(ctx, json):
 
 @channel_meta.command("set", cls=RestreamCommand)
 @click.option("--title", help="Stream title")
-@click.option("--description", help="Stream description") 
+@click.option("--description", help="Stream description")
 @click.option("--game", help="Game/category")
 @click.pass_context
 def channel_meta_set(ctx, title, description, game, json):
@@ -273,11 +277,11 @@ def channel_meta_set(ctx, title, description, game, json):
         updates["description"] = description
     if game is not None:
         updates["game"] = game
-    
+
     if not updates:
         click.echo("No updates specified", err=True)
         sys.exit(1)
-    
+
     updated_meta = client.update_channel_meta(**updates)
     _handle_output(updated_meta, json)
 
@@ -309,7 +313,9 @@ def event_get(ctx, event_id, json):
 
 
 @event.command("history", cls=RestreamCommand)
-@click.option("--limit", type=int, default=10, help="Number of historical events to retrieve")
+@click.option(
+    "--limit", type=int, default=10, help="Number of historical events to retrieve"
+)
 @click.pass_context
 def event_history(ctx, limit, json):
     """Get historical events."""
@@ -374,6 +380,7 @@ def monitor():
 @click.pass_context
 def monitor_streaming(ctx, duration, json):
     """Monitor real-time streaming events via WebSocket."""
+
     async def run_monitor():
         monitor_client = StreamingMonitorClient()
         try:
@@ -389,7 +396,7 @@ def monitor_streaming(ctx, duration, json):
                 click.echo("\nMonitoring stopped.")
         finally:
             await monitor_client.close()
-    
+
     asyncio.run(run_monitor())
 
 
@@ -398,6 +405,7 @@ def monitor_streaming(ctx, duration, json):
 @click.pass_context
 def monitor_chat(ctx, duration, json):
     """Monitor real-time chat events via WebSocket."""
+
     async def run_monitor():
         monitor_client = ChatMonitorClient()
         try:
@@ -413,7 +421,7 @@ def monitor_chat(ctx, duration, json):
                 click.echo("\nMonitoring stopped.")
         finally:
             await monitor_client.close()
-    
+
     asyncio.run(run_monitor())
 
 
@@ -426,17 +434,16 @@ def version_cmd(ctx, json):
         cli_version = version("restream.io")
     except Exception:
         cli_version = "development"
-    
+
     try:
         lib_version = version("pyrestream")
     except Exception:
         lib_version = "development"
-    
+
     if json:
-        click.echo(json_lib.dumps({
-            "cli_version": cli_version,
-            "library_version": lib_version
-        }))
+        click.echo(
+            json_lib.dumps({"cli_version": cli_version, "library_version": lib_version})
+        )
     else:
         click.echo(f"restream.io CLI: {cli_version}")
         click.echo(f"pyrestream library: {lib_version}")

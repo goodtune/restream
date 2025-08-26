@@ -7,7 +7,7 @@ from .websocket import ChatMonitorClient, StreamingMonitorClient
 
 __all__ = [
     "RestreamClient",
-    "perform_login", 
+    "perform_login",
     "APIError",
     "AuthenticationError",
     "ChatMonitorClient",
