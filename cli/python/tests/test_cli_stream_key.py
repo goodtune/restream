@@ -149,4 +149,4 @@ def test_stream_key_get_command_api_error():
             result = runner.invoke(cli, ["stream-key", "get"])
 
         assert result.exit_code == 1
-        assert "API error" in result.output
+        assert "Server error (500)" in result.output

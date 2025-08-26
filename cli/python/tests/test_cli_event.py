@@ -330,4 +330,4 @@ def test_event_list_command_api_error():
             result = runner.invoke(cli, ["event", "list"])
 
     assert result.exit_code == 1
-    assert "API error:" in result.output
+    assert "Server error (500)" in result.output

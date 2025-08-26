@@ -112,4 +112,4 @@ def test_profile_command_expired_token():
             result = runner.invoke(profile, [])
 
     assert result.exit_code == 1
-    assert "API error" in result.output
+    assert "Authentication failed" in result.output

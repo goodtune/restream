@@ -44,11 +44,31 @@ class RestreamCommand(click.Command):
         try:
             return super().invoke(ctx, *args, **kwargs)
         except APIError as e:
-            _handle_api_error(e)
+            # Extract context from command for better error messages
+            context = self._extract_error_context(ctx, kwargs)
+            _handle_api_error(e, context)
         except AuthenticationError as e:
             click.echo(f"Authentication error: {e}", err=True)
             click.echo("Please run 'restream.io login' first.", err=True)
             sys.exit(1)
+
+    def _extract_error_context(self, ctx, kwargs):
+        """Extract context information for better error messages."""
+        command_path = ctx.info_name
+        parent_name = ctx.parent.info_name if ctx.parent else ""
+
+        # Get arguments from Click context params
+        params = ctx.params
+
+        # Map command paths to resource types and extract IDs
+        if parent_name == "channel" and command_path == "get":
+            return {"resource_type": "Channel", "resource_id": params.get("channel_id")}
+        elif parent_name == "event" and command_path == "get":
+            return {"resource_type": "Event", "resource_id": params.get("event_id")}
+        elif command_path == "stream-key" and "event_id" in params:
+            return {"resource_type": "Event", "resource_id": params.get("event_id")}
+
+        return None
 
 
 def _attrs_to_dict(obj):
@@ -113,14 +133,19 @@ def _handle_output(data, json_flag):
         _format_human_readable(data)
 
 
-def _handle_api_error(e):
+def _handle_api_error(e, context=None):
     """Handle API errors with appropriate user messages."""
     if e.status_code == 401:
         click.echo(
             "Authentication failed. Please run 'restream.io login' first.", err=True
         )
     elif e.status_code == 404:
-        click.echo("Resource not found.", err=True)
+        if context and context.get("resource_type") and context.get("resource_id"):
+            resource_type = context["resource_type"]
+            resource_id = context["resource_id"]
+            click.echo(f"{resource_type} not found: {resource_id}", err=True)
+        else:
+            click.echo("Resource not found.", err=True)
     elif e.status_code == 429:
         click.echo("Rate limit exceeded. Please try again later.", err=True)
     elif e.status_code >= 500:
@@ -305,14 +330,15 @@ def event_get(ctx, event_id, json):
 
 
 @event.command("history", cls=RestreamCommand)
+@click.option("--page", type=int, default=1, help="Page number")
 @click.option(
     "--limit", type=int, default=10, help="Number of historical events to retrieve"
 )
 @click.pass_context
-def event_history(ctx, limit, json):
+def event_history(ctx, page, limit, json):
     """Get historical events."""
     client = _get_client()
-    history = client.get_events_history(limit=limit)
+    history = client.list_events_history(page=page, limit=limit)
     _handle_output(history, json)
 
 
@@ -321,16 +347,22 @@ def event_history(ctx, limit, json):
 def event_in_progress(ctx, json):
     """Get currently in-progress events."""
     client = _get_client()
-    events = client.get_in_progress_events()
+    events = client.list_events_in_progress()
     _handle_output(events, json)
 
 
 @event.command("upcoming", cls=RestreamCommand)
+@click.option(
+    "--source", type=int, help="Filter by source type (1=Studio, 2=Encoder, 3=Video)"
+)
+@click.option("--scheduled", is_flag=True, help="Show only scheduled events")
 @click.pass_context
-def event_upcoming(ctx, json):
+def event_upcoming(ctx, source, scheduled, json):
     """Get upcoming events."""
     client = _get_client()
-    events = client.get_upcoming_events()
+    events = client.list_events_upcoming(
+        source=source, scheduled=scheduled if scheduled else None
+    )
     _handle_output(events, json)
 
 
