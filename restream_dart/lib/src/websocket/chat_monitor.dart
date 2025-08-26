@@ -162,9 +162,7 @@ class ChatMonitor {
   /// Stream of chat messages only.
   Stream<ChatMessage> get messages => events
       .where((event) => event.type == ChatEventType.chatMessage)
-      .map((event) => event.chatMessage!)
-      .where((message) => message != null)
-      .cast<ChatMessage>();
+      .map((event) => event.chatMessage!);
 
   /// Whether the monitor is currently connected.
   bool get isConnected => _isConnected;

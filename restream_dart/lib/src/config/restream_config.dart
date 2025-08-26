@@ -2,6 +2,7 @@
 /// 
 /// This module handles configuration settings including API base URLs,
 /// client credentials, and other settings.
+library;
 
 /// Configuration class for Restream.io client settings.
 class RestreamConfig {

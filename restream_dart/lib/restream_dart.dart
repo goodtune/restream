@@ -26,7 +26,7 @@
 /// final profile = await client.getProfile();
 /// final events = await client.listEvents();
 /// ```
-library restream_dart;
+library;
 
 // Core API client
 export 'src/api/restream_client.dart';

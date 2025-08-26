@@ -2,6 +2,7 @@
 /// 
 /// This module defines custom exceptions that map to the error conditions
 /// that can occur when interacting with the Restream.io API.
+library;
 
 /// Base exception for all Restream.io API errors.
 class RestreamException implements Exception {

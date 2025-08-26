@@ -6,11 +6,11 @@ homepage: https://github.com/goodtune/restream-cli
 issue_tracker: https://github.com/goodtune/restream-cli/issues
 
 environment:
-  sdk: ^3.9.1
+  sdk: ^3.9.0
 
 dependencies:
   http: ^1.2.2
-  web_socket_channel: ^2.4.3
+  web_socket_channel: ^3.0.3
   json_annotation: ^4.8.1
   crypto: ^3.0.3
 
