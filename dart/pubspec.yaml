@@ -5,6 +5,14 @@ repository: https://github.com/goodtune/restream
 homepage: https://github.com/goodtune/restream
 issue_tracker: https://github.com/goodtune/restream/issues
 
+topics:
+  - restream
+  - streaming
+  - api
+  - websocket
+
+license: BSD-3-Clause
+
 environment:
   sdk: ^3.9.0
 

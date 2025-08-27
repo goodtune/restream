@@ -11,6 +11,7 @@ name = "pyrestream"
 dynamic = ["version"]
 description = "Python client library for the Restream.io REST API and WebSocket APIs"
 readme = "README.md"
+license = {text = "BSD-3-Clause"}
 requires-python = ">=3.11"
 dependencies = [
   "attrs>=25.3.0",
