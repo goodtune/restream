@@ -5,15 +5,15 @@ on:
     branches: [ main, develop ]
     paths:
       - 'dart/**'
-      - '!dart/examples/**'
-      - 'dart/examples/**'
+      - '!dart/example/**'
+      - 'dart/example/**'
       - '.github/workflows/dart-test.yml'
   pull_request:
     branches: [ main, develop ]
     paths:
       - 'dart/**'
-      - '!dart/examples/**'
-      - 'dart/examples/**'
+      - '!dart/example/**'
+      - 'dart/example/**'
       - '.github/workflows/dart-test.yml'
 
 jobs:
@@ -43,7 +43,7 @@ jobs:
       run: dart pub get
 
     - name: Get Flutter example dependencies
-      working-directory: dart/examples/flutter_example
+      working-directory: dart/example/flutter_example
       run: flutter pub get
 
     - name: Verify formatting
@@ -76,13 +76,13 @@ jobs:
       run: flutter pub get
 
     - name: Get dependencies for example
-      working-directory: dart/examples/flutter_example
+      working-directory: dart/example/flutter_example
       run: flutter pub get
 
     - name: Analyze example
-      working-directory: dart/examples/flutter_example
+      working-directory: dart/example/flutter_example
       run: flutter analyze
 
     - name: Test example builds
-      working-directory: dart/examples/flutter_example
+      working-directory: dart/example/flutter_example
       run: flutter build web --wasm --debug

@@ -15,7 +15,7 @@ Current implemented surface: OAuth2 login, profile retrieval, channel management
 /
 ├── python/                      # Python client library
 ├── dart/                        # Dart client library  
-│   └── examples/
+│   └── example/
 │       └── flutter_example/     # Flutter example app
 ├── cli/
 │   └── python/                  # Python CLI tool (installs as restream.io)
@@ -76,7 +76,7 @@ Current implemented surface: OAuth2 login, profile retrieval, channel management
 ### Location & Layout
 - Package location: `dart/`
 - Package name: `restream` (publishable to pub.dev)
-- Flutter example: `dart/examples/flutter_example/`
+- Flutter example: `dart/example/flutter_example/`
 
 ### Language & ecosystem
 - **Dart 3.9+**

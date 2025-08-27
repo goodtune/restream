@@ -10,7 +10,7 @@ Unofficial multi-language SDKs and tools for the Restream.io API, including clie
 ├── docs/                        # API documentation and guides
 ├── python/                      # Python client library
 ├── dart/                        # Dart client library
-│   └── examples/
+│   └── example/
 │       └── flutter_example/     # Flutter example app
 └── cli/
     └── python/                  # Python CLI tool (installs as restream.io)
