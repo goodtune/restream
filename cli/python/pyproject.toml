@@ -11,6 +11,7 @@ name = "restream.io"
 dynamic = ["version"]
 description = "CLI for interacting with the Restream.io API"
 readme = "README.md"
+license = {text = "BSD-3-Clause"}
 requires-python = ">=3.11"
 dependencies = [
   "click>=8.2.1",
