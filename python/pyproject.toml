@@ -30,8 +30,10 @@ fallback_version = "0.0.0+unknown"
 
 [dependency-groups]
 dev = [
+    "isort>=6.0.1",
     "pymarkdownlnt>=0.9.31",
     "pytest>=8.4.1",
     "pytest-asyncio>=1.1.0",
     "responses>=0.25.7",
+    "ruff>=0.12.10",
 ]

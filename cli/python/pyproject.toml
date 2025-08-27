@@ -28,6 +28,9 @@ version_scheme = "release-branch-semver"
 local_scheme = "dirty-tag"
 fallback_version = "0.0.0+unknown"
 
+[tool.uv.sources]
+pyrestream = { path = "../../python", editable = true }
+
 [dependency-groups]
 dev = [
     "pymarkdownlnt>=0.9.31",
