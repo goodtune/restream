@@ -80,10 +80,23 @@ def test_channel_get_command_human_readable_output():
         "display_name": "Test Channel",
     }
 
+    # Mock channel metadata API response
+    channel_meta_data = {
+        "title": "Test Stream Title",
+        "description": "Test stream description"
+    }
+
     responses.add(
         "GET",
         "https://api.restream.io/v2/user/channel/123456",
         json=channel_data,
+        status=200,
+    )
+
+    responses.add(
+        "GET", 
+        "https://api.restream.io/v2/user/channel-meta/123456",
+        json=channel_meta_data,
         status=200,
     )
 
@@ -103,6 +116,8 @@ def test_channel_get_command_human_readable_output():
     assert "Channel Information:" in result.output
     assert "ID: 123456" in result.output
     assert "Display Name: Test Channel" in result.output
+    assert "Title: Test Stream Title" in result.output
+    assert "Description: Test stream description" in result.output
     assert "Status: Active" in result.output
     assert "Channel URL: https://beam.pro/xxx" in result.output
     # Should not contain JSON format
@@ -125,10 +140,23 @@ def test_channel_get_command_json_output():
         "display_name": "Test Channel",
     }
 
+    # Mock channel metadata API response  
+    channel_meta_data = {
+        "title": "Test Stream Title",
+        "description": "Test stream description"
+    }
+
     responses.add(
         "GET",
         "https://api.restream.io/v2/user/channel/123456",
         json=channel_data,
+        status=200,
+    )
+
+    responses.add(
+        "GET",
+        "https://api.restream.io/v2/user/channel-meta/123456", 
+        json=channel_meta_data,
         status=200,
     )
 
@@ -149,6 +177,8 @@ def test_channel_get_command_json_output():
     assert output_data["id"] == 123456
     assert output_data["display_name"] == "Test Channel"
     assert output_data["active"] is True
+    assert output_data["title"] == "Test Stream Title"
+    assert output_data["description"] == "Test stream description"
 
 
 @responses.activate
