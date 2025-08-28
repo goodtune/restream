@@ -27,6 +27,7 @@ from pyrestream.schemas import (
     StreamingEvent,
     StreamKey,
 )
+from ._schemas import ChannelWithMeta
 
 
 class RestreamCommand(click.Command):
@@ -92,6 +93,7 @@ def _format_human_readable(data):
             Channel,
             ChannelSummary,
             ChannelMeta,
+            ChannelWithMeta,
             StreamEvent,
             EventsHistoryResponse,
             Platform,
@@ -238,28 +240,52 @@ def channel_get(ctx, channel_id, json):
     """Get channel details by ID."""
     client = _get_client()
     channel_data = client.get_channel(channel_id)
-    _handle_output(channel_data, json)
+    channel_meta = client.get_channel_meta(channel_id)
+
+    # Create combined object by inheriting all fields from both objects
+    combined_data = ChannelWithMeta(
+        # Channel fields
+        id=channel_data.id,
+        user_id=channel_data.user_id,
+        service_id=channel_data.service_id,
+        channel_identifier=channel_data.channel_identifier,
+        channel_url=channel_data.channel_url,
+        event_identifier=channel_data.event_identifier,
+        event_url=channel_data.event_url,
+        embed=channel_data.embed,
+        active=channel_data.active,
+        display_name=channel_data.display_name,
+        # ChannelMeta fields
+        title=channel_meta.title,
+        description=channel_meta.description,
+    )
+    _handle_output(combined_data, json)
 
 
 @channel.command("set", cls=RestreamCommand)
 @click.argument("channel_id")
 @click.option("--title", help="Channel title")
+@click.option("--description", help="Channel description")
 @click.option("--enabled", type=bool, help="Enable/disable channel")
 @click.pass_context
-def channel_set(ctx, channel_id, title, enabled, json):
+def channel_set(ctx, channel_id, title, description, enabled, json):
     """Update channel settings."""
     client = _get_client()
-    updates = {}
-    if title is not None:
-        updates["title"] = title
-    if enabled is not None:
-        updates["enabled"] = enabled
 
-    if not updates:
+    if not title and not description and enabled is None:
         click.echo("No updates specified", err=True)
         sys.exit(1)
 
-    updated_channel = client.update_channel(channel_id, **updates)
+    # Handle enabled/disabled status using update_channel
+    if enabled is not None:
+        client.update_channel(channel_id, active=enabled)
+
+    # Handle metadata updates using update_channel_meta
+    if title is not None or description is not None:
+        client.update_channel_meta(channel_id, title=title, description=description)
+
+    # Get updated channel data to return to user
+    updated_channel = client.get_channel(channel_id)
     _handle_output(updated_channel, json)
 
 
